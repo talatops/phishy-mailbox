@@ -3,7 +3,9 @@ import {DefaultSession, getServerSession, type NextAuthOptions} from 'next-auth'
 import Credentials from 'next-auth/providers/credentials';
 import * as z from 'zod';
 import * as bcrypt from 'bcrypt';
-import {PrismaClient} from '@prisma/client';
+import {PrismaClient} from '@prisma/client/edge';
+
+import {env} from '~/env.mjs';
 
 const db = new PrismaClient();
 
@@ -83,7 +85,7 @@ export const authOptions: NextAuthOptions = {
   jwt: {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret: '3DMCYKQ98xwJr+nCYFkq9PPGCre1vOfHFj2pzFJm08g=',
+  secret: env.NEXTAUTH_SECRET,
 };
 
 export const getServerAuthSession = (ctx: {
