@@ -3,11 +3,9 @@ import {DefaultSession, getServerSession, type NextAuthOptions} from 'next-auth'
 import Credentials from 'next-auth/providers/credentials';
 import * as z from 'zod';
 import * as bcrypt from 'bcrypt';
-import {PrismaClient} from '@prisma/client/edge';
 
 import {env} from '~/env.mjs';
-
-const db = new PrismaClient();
+import {prisma} from '~/server/db';
 
 declare module 'next-auth' {
   interface Session {
@@ -31,7 +29,7 @@ export const authOptions: NextAuthOptions = {
     },
     session: async ({session, token}) => {
       if (token && typeof token.id === 'string') {
-        const user = await db.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: {
             id: token.id,
           },
@@ -67,7 +65,7 @@ export const authOptions: NextAuthOptions = {
           })
           .parse(credentials);
 
-        const user = await db.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: {
             email: parsedCredentials.email,
           },
