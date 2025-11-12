@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "postinstall": "prisma generate",
     "lint": "yarn lint:eslint:fix && yarn prettier:fix",
     "lint:eslint": "eslint src",
     "lint:eslint:fix": "eslint src --fix",
